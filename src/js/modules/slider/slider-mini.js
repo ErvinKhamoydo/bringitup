@@ -3,6 +3,7 @@ import Slider from './slider';
 export default class MiniSlider extends Slider {
     constructor(container, next, prev, activeClass, animate, autoplay) {
         super(container, next, prev, activeClass, animate, autoplay);
+        this.onautoplay = null;
     }
 
     decorizesSlides() {
@@ -57,6 +58,10 @@ export default class MiniSlider extends Slider {
         });
     }
 
+    onAutoplayTrigger() {
+        this.onautoplay = setInterval(() => this.nextSlide(), 5000);
+    }
+
     init() {
         this.container.style.cssText = `
             display: flex;
@@ -68,8 +73,17 @@ export default class MiniSlider extends Slider {
         this.bindTriggers();
         this.decorizesSlides();
 
+
         if (this.autoplay) {
-            setInterval(() => this.nextSlide(), 5000);
+            this.onAutoplayTrigger();
+
+            document.querySelector('.modules__slider').addEventListener('mouseenter', () => {
+                clearInterval(this.onautoplay);
+            });
+
+            document.querySelector('.modules__slider').addEventListener('mouseleave', () => {
+                this.onAutoplayTrigger();
+            });
         }
     }
 }
