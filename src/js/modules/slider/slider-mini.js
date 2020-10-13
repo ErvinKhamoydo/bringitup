@@ -63,27 +63,29 @@ export default class MiniSlider extends Slider {
     }
 
     init() {
-        this.container.style.cssText = `
+        try {
+            this.container.style.cssText = `
             display: flex;
             flex-wrap: wrap;
             overflow: hidden;
             align-items: flex-start;
         `;
 
-        this.bindTriggers();
-        this.decorizesSlides();
+            this.bindTriggers();
+            this.decorizesSlides();
 
 
-        if (this.autoplay) {
-            this.onAutoplayTrigger();
-
-            document.querySelector('.modules__slider').addEventListener('mouseenter', () => {
-                clearInterval(this.onautoplay);
-            });
-
-            document.querySelector('.modules__slider').addEventListener('mouseleave', () => {
+            if (this.autoplay) {
                 this.onAutoplayTrigger();
-            });
-        }
+
+                document.querySelector('.modules__slider').addEventListener('mouseenter', () => {
+                    clearInterval(this.onautoplay);
+                });
+
+                document.querySelector('.modules__slider').addEventListener('mouseleave', () => {
+                    this.onAutoplayTrigger();
+                });
+            } 
+        } catch (error) {}
     }
 }
